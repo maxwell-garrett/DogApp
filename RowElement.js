@@ -8,13 +8,16 @@ import {
 
 
 const RowElement = (props) => {
+  /*<Countdown initialStart={Date.now()}></Countdown>*/
   return (
     <View style={styles.row}>
       <View style={styles.textBox}>
         <Text style={styles.text}>{props.rowName}</Text>
       </View>
       <View style={styles.timerBox}>
-        <Countdown initialStart={Date.now()}></Countdown>
+        {props.countdown ?
+          <Countdown initialStart={Date.now()}></Countdown> :
+          <Emoji numberOfEmojis={2} emoji="💩"></Emoji>}
       </View>
       <View style={styles.reloadBox}>
         <Icon
@@ -27,6 +30,28 @@ const RowElement = (props) => {
     </View>
   );
 };
+
+class Emoji extends React.Component {
+  constructor(props) {
+    /**
+    * Setup the date and state
+    */
+    super(props);
+    const curDate = Date.now()
+    this.state = { numberOfEmojis: props.numberOfEmojis, emoji: props.emoji};
+  }
+
+  render() {
+    /**/
+    const finalEmoji = this.state.emoji.repeat(this.state.numberOfEmojis)
+
+    return (
+      <Text style={styles.emoji}>
+        {finalEmoji}
+      </Text>
+    );
+  }
+}
 
 class Countdown extends React.Component {
   constructor(props) {
@@ -110,6 +135,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   timer: {
+    fontSize: 24,
+    fontWeight: '400',
+  },
+  emoji: {
     fontSize: 24,
     fontWeight: '400',
   },
