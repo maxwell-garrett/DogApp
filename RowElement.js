@@ -1,35 +1,60 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/Octicons';
 import {
   Text,
   StyleSheet,
   View,
+  Pressable,
 } from 'react-native';
-
+import {resetTimer, incrementCounter} from './Storage'
 
 const RowElement = (props) => {
   /*<Countdown initialStart={Date.now()}></Countdown>*/
+  const [obj, changeObj] = useState(props.obj);
   return (
     <View style={styles.row}>
       <View style={styles.textBox}>
-        <Text style={styles.text}>{props.rowName}</Text>
+        <Text style={styles.text}>{obj.name}</Text>
       </View>
       <View style={styles.timerBox}>
-        {props.countdown ?
-          <Countdown initialStart={Date.now()}></Countdown> :
-          <Emoji numberOfEmojis={2} emoji="💩"></Emoji>}
+        {obj.type == 'stopwatch' ?
+          <Countdown initialStart={obj.initialStart}></Countdown> :
+          <Emoji numberOfEmojis={obj.numEmojis} emoji={obj.emoji}></Emoji>}
       </View>
       <View style={styles.reloadBox}>
-        <Icon
-            style={styles.reload}
-            name='sync'
-            size={35}
-            color='#000'
-        />
+        {obj.type == 'stopwatch' ?
+        <ReloadButton uuid={obj.uuid} callback={changeObj}/> :
+        <IncrementButton uuid={obj.uuid} callback={changeObj}/>}
       </View>
     </View>
   );
 };
+
+const ReloadButton = (props) => {
+  return (
+    <Pressable onPress={() => resetTimer(props.uuid, props.callback)}>
+      <Icon
+          style={styles.reload}
+          name='sync'
+          size={35}
+          color='#000'
+      />
+    </Pressable>
+  )
+}
+
+const IncrementButton = (props) => {
+  return (
+    <Pressable onPress={() => incrementCounter(props.uuid, props.callback)}>
+    <Icon
+        style={styles.reload}
+        name='arrow-up'
+        size={35}
+        color='#000'
+    />
+    </Pressable>
+  )
+}
 
 class Emoji extends React.Component {
   constructor(props) {
