@@ -1,3 +1,6 @@
+import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -25,22 +28,26 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import Home from './Home';
+import AddNew from './AddNew'
 
-import TopBanner from './TopBanner';
-import RowElement from './RowElement';
+const Stack = createStackNavigator();
 
-
-
-const App: () => Node = () => {
+const App = () => {
 
   return (
-    <SafeAreaView>
-      <StatusBar barStyle='light-content'/>
-      <TopBanner titleName='Blue'/>
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <RowElement rowName="Time since out im too long"/>
-      </ScrollView>
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen
+          name="Home"
+          component={Home}
+        />
+        <Stack.Screen
+          name="AddNew"
+          component={AddNew}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
