@@ -1,6 +1,8 @@
 import React from 'react';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/Octicons';
+import uuid from 'react-native-uuid';
+
 import {
   Text,
   StyleSheet,
@@ -9,6 +11,8 @@ import {
   TextInput,
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+
+import {storeData, getData} from './Storage';
 
 const AddNew = (props) => {
   /*<Countdown initialStart={Date.now()}></Countdown>*/
@@ -31,9 +35,56 @@ const AddNew = (props) => {
       />
 
       <CounterFields selected={value} navigation={props.navigation}/>
+      <StopwatchFields selected={value} navigation={props.navigation}/>
     </SafeAreaView>
   );
 };
+
+
+
+const StopwatchFields = (props) => {
+  if (props.selected != 'stopwatch') {
+    return null
+  }
+
+  const [fieldName, onChangeFieldName] = useState("");
+  const [rows, changeRows] = useState([]);
+  const obj = {uuid: uuid.v4(), type: 'stopwatch', name: fieldName, initialStart: Date.now()};
+
+
+  useEffect(() => {
+    getData('rows')
+     .then(rawData => JSON.parse(rawData))
+     .then(data => changeRows(data))
+    })
+
+  return (
+    <View style={styles.sectionContainer}>
+      <TextInput
+        style={styles.input}
+        onChangeText={onChangeFieldName}
+        value={fieldName}
+        placeholder="Enter stopwatch name"
+        placeholderTextColor='#000'
+        />
+
+      <View style={styles.submit}>
+        <Icon.Button
+            name='check'
+            size={45}
+            color='#000'
+            onPress={() => {
+              const tempRow = rows.concat(obj)
+              storeData(tempRow)
+              props.navigation.navigate('Home');
+            }}
+        >
+          <Text>Submit</Text>
+        </Icon.Button>
+      </View>
+    </View>
+  );
+}
 
 
 const CounterFields = (props) => {
@@ -46,6 +97,20 @@ const CounterFields = (props) => {
   const [emoji, onChangeEmoji] = useState("");
   const [resetHour, onChangeResetHour] = useState("00");
   const [resetMinute, onChangeResetMinute] = useState("00");
+  const [rows, changeRows] = useState([]);
+  const obj = {uuid: uuid.v4(),
+                type: 'counter',
+                name: fieldName,
+                emoji: emoji,
+                resetHour: resetHour,
+                resetMinute: resetMinute,
+                numEmojis: 0};
+
+  useEffect(() => {
+    getData('rows')
+     .then(rawData => JSON.parse(rawData))
+     .then(data => changeRows(data))
+    })
 
   return (
     <View style={styles.sectionContainer}>
@@ -95,6 +160,8 @@ const CounterFields = (props) => {
             size={45}
             color='#000'
             onPress={() => {
+              const tempRow = rows.concat(obj)
+              storeData(tempRow)
               props.navigation.navigate('Home');
             }}
         >
@@ -144,7 +211,6 @@ const styles = StyleSheet.create({
   },
   sectionContainer: {
     flex: 1,
-    backgroundColor: '#000',
   },
   submit: {
     position: 'absolute',
