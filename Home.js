@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import type {Node} from 'react';
+import Icon from 'react-native-vector-icons/Octicons';
 import {
   SafeAreaView,
   ScrollView,
@@ -20,17 +21,41 @@ import {
 
 import TopBanner from './TopBanner';
 import RowElement from './RowElement';
+import {getData} from './Storage';
 
-const Home = (props) => {
+const Home = ({ navigation }) => {
+  const [rows, changeRows] = useState([]);
+
+  useEffect(() => {
+    getData('rows')
+     .then(rawData => JSON.parse(rawData))
+     .then(data => changeRows(data))
+    })
+
+  const listElements = rows.map((obj) => <RowElement key={obj.uuid} obj={obj}/>)
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex:1}}>
       <StatusBar barStyle='light-content'/>
       <TopBanner titleName='Blue'/>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <RowElement rowName="Time since out im too long" countdown={false}/>
+        {listElements}
       </ScrollView>
+
+      <View style={styles.plus}>
+        <Icon.Button
+            name='plus'
+            size={45}
+            color='#000'
+            onPress={() => {
+              navigation.navigate('AddNew');
+            }}
+        >
+          <Text>Add new tracker</Text>
+        </Icon.Button>
+      </View>
     </SafeAreaView>
+
   );
 };
 
@@ -50,6 +75,11 @@ const styles = StyleSheet.create({
   },
   highlight: {
     fontWeight: '700',
+  },
+  plus: {
+    position: 'absolute',
+    bottom: 15,
+    alignSelf: 'center',
   },
 });
 
