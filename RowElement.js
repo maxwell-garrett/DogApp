@@ -11,6 +11,11 @@ import {resetTimer, incrementCounter} from './Storage'
 const RowElement = (props) => {
   /*<Countdown initialStart={Date.now()}></Countdown>*/
   const [obj, changeObj] = useState(props.obj);
+
+  const test = (obj) => {
+    changeObj(obj)
+  }
+
   return (
     <View style={styles.row}>
       <View style={styles.textBox}>
@@ -23,7 +28,7 @@ const RowElement = (props) => {
       </View>
       <View style={styles.reloadBox}>
         {obj.type == 'stopwatch' ?
-        <ReloadButton uuid={obj.uuid} callback={changeObj}/> :
+        <ReloadButton uuid={obj.uuid} callback={test}/> :
         <IncrementButton uuid={obj.uuid} callback={changeObj}/>}
       </View>
     </View>
@@ -65,6 +70,13 @@ class Emoji extends React.Component {
     const curDate = Date.now()
     this.state = { numberOfEmojis: props.numberOfEmojis, emoji: props.emoji};
   }
+  componentDidUpdate(prevProps) {
+    if (this.props.numberOfEmojis != prevProps.numberOfEmojis) {
+      this.setState((state, props) => {
+        return {numberOfEmojis: this.props.numberOfEmojis}
+      })
+    }
+  }
 
   render() {
     /**/
@@ -86,11 +98,20 @@ class Countdown extends React.Component {
     super(props);
     const curDate = Date.now()
     this.state = { initialStart: props.initialStart, seconds: curDate - props.initialStart};
+    console.log(props.initialStart)
     this.updateClock = this.updateClock.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.initialStart != prevProps.initialStart) {
+      this.setState((state, props) => {
+        return {initialStart: this.props.initialStart, seconds: Date.now() - this.props.initialStart}
+      })
+    }
+  }
+
   componentDidMount() {
-    this.interval = setInterval(() => this.updateClock(), 1000);
+    this.interval = setInterval(() => this.updateClock(), 200);
   }
 
   componentWillUnmount() {
