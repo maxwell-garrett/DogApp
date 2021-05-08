@@ -12,9 +12,6 @@ const RowElement = (props) => {
   /*<Countdown initialStart={Date.now()}></Countdown>*/
   const [obj, changeObj] = useState(props.obj);
 
-  const test = (obj) => {
-    changeObj(obj)
-  }
 
   return (
     <View style={styles.row}>
@@ -28,7 +25,7 @@ const RowElement = (props) => {
       </View>
       <View style={styles.reloadBox}>
         {obj.type == 'stopwatch' ?
-        <ReloadButton uuid={obj.uuid} callback={test}/> :
+        <ReloadButton uuid={obj.uuid} callback={changeObj}/> :
         <IncrementButton uuid={obj.uuid} callback={changeObj}/>}
       </View>
     </View>
