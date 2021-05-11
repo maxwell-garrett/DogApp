@@ -146,11 +146,17 @@ class Countdown extends React.Component {
     minutes = minutes % 60
     hours = hours % 24
     return {
-      seconds: seconds,
-      minutes: minutes,
-      hours: hours,
+      seconds: this.padZeros(seconds, 2),
+      minutes: this.padZeros(minutes, 2),
+      hours: this.padZeros(hours, 2),
       days: days,
     };
+  }
+
+  padZeros(number,length) {
+    let right = number.toString()
+    let padding = length - right.length
+    return "0".repeat(padding) + right
   }
 
   render() {
@@ -158,11 +164,11 @@ class Countdown extends React.Component {
 
     let output = "";
     if (result.days > 0) {
-      output = output.concat(result.days.toString(), ' Days ', result.hours.toString(),
-      ":", result.minutes.toString(), ":", result.seconds.toString())
+      output = output.concat(result.days.toString(), ' Days ', result.hours,
+      ":", result.minutes, ":", result.seconds)
     } else {
-      output = output.concat(result.hours.toString(), ":",
-      result.minutes.toString(), ":", result.seconds.toString())
+      output = output.concat(result.hours, ":",
+      result.minutes, ":", result.seconds)
     }
 
     return (
