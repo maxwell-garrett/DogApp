@@ -6,12 +6,11 @@ import {
   View,
   Pressable,
 } from 'react-native';
-import {resetTimer, incrementCounter} from './Storage'
+import {resetTimer, incrementCounter, deleteRow} from './Storage'
 
 const RowElement = (props) => {
   /*<Countdown initialStart={Date.now()}></Countdown>*/
   const [obj, changeObj] = useState(props.obj);
-
 
   return (
     <View style={styles.row}>
@@ -28,9 +27,25 @@ const RowElement = (props) => {
         <ReloadButton uuid={obj.uuid} callback={changeObj}/> :
         <IncrementButton uuid={obj.uuid} callback={changeObj}/>}
       </View>
+      <View style={styles.deleteBox}>
+        <DeleteButton uuid={obj.uuid} callback={props.updateRows}/>
+      </View>
     </View>
   );
 };
+
+const DeleteButton = (props) => {
+  return (
+    <Pressable onPress={() => deleteRow(props.uuid, props.callback)}>
+      <Icon
+          style={styles.deleteButton}
+          name='trashcan'
+          size={35}
+          color='#000'
+      />
+    </Pressable>
+  )
+}
 
 const ReloadButton = (props) => {
   return (
@@ -160,9 +175,11 @@ const styles = StyleSheet.create({
   row: {
     height: 70,
     flexDirection: "row",
-    backgroundColor: '#0000FF',
+    backgroundColor: '#DBA861', /*  */
     display: 'flex',
     justifyContent: 'center',
+    borderBottomColor: '#294F50',
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   textBox: {
     flex: 5,
@@ -189,6 +206,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'center',
   },
+  deleteBox: {
+    flex: 1,
+    alignSelf: 'center',
+  }
 });
 
 
