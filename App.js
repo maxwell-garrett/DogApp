@@ -41,10 +41,24 @@ const App = () => {
         <Stack.Screen
           name="Home"
           component={Home}
+          options={{
+            headerStyle: {
+              backgroundColor: '#F8ECEC',
+              borderBottomColor: '#294F50',
+              borderBottomWidth: StyleSheet.hairlineWidth,
+            },
+            }}
         />
         <Stack.Screen
           name="AddNew"
           component={AddNew}
+          options={{
+            headerStyle: {
+              backgroundColor: '#F8ECEC',
+              borderBottomColor: '#294F50',
+              borderBottomWidth: StyleSheet.hairlineWidth,
+            },
+            }}
         />
       </Stack.Navigator>
     </NavigationContainer>

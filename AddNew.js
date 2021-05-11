@@ -24,7 +24,7 @@ const AddNew = (props) => {
   ]);
 
   return (
-    <SafeAreaView style={{flex:1}}>
+    <SafeAreaView style={{flex:1, backgroundColor: '#294F50'}}>
       <DropDownPicker
       open={open}
       value={value}
@@ -32,6 +32,7 @@ const AddNew = (props) => {
       setValue={setValue}
       setItems={setItems}
       setOpen={setOpen}
+      style={styles.input}
       />
 
       <CounterFields selected={value} navigation={props.navigation}/>
@@ -73,6 +74,7 @@ const StopwatchFields = (props) => {
             name='check'
             size={45}
             color='#000'
+            backgroundColor='#F8ECEC'
             onPress={() => {
               const tempRow = rows.concat(obj)
               storeData(tempRow)
@@ -159,6 +161,7 @@ const CounterFields = (props) => {
             name='check'
             size={45}
             color='#000'
+            backgroundColor='#F8ECEC'
             onPress={() => {
               const tempRow = rows.concat(obj)
               storeData(tempRow)
@@ -175,7 +178,9 @@ const CounterFields = (props) => {
 const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#F8ECEC',
+    borderBottomColor: '#294F50',
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   sectionDescription: {
     marginTop: 8,
@@ -184,19 +189,19 @@ const styles = StyleSheet.create({
   },
   input: {
     color: '#000',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#F8ECEC',
     borderColor: '#000',
+    borderBottomColor: '#294F50',
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   inputTime: {
     color: '#000',
-    backgroundColor: '#FFFFFF',
     borderColor: '#000',
     flex: 2,
     textAlign: 'center',
   },
   semicolon: {
     color: '#000',
-    backgroundColor: '#FFFFFF',
     borderColor: '#000',
     flex: 1,
     textAlign: 'center',
@@ -204,7 +209,6 @@ const styles = StyleSheet.create({
   },
   inputTimeLabel: {
     color: '#000',
-    backgroundColor: '#FFFFFF',
     borderColor: '#000',
     flex: 10,
     alignSelf: 'center',

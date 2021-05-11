@@ -26,18 +26,22 @@ import {getData} from './Storage';
 const Home = ({ navigation }) => {
   const [rows, changeRows] = useState([]);
 
-  useEffect(() => {
+  const updateRows = () => {
     getData('rows')
      .then(rawData => JSON.parse(rawData))
      .then(data => changeRows(data))
+  }
+
+  useEffect(() => {
+    updateRows()
     })
 
-  const listElements = rows.map((obj) => <RowElement key={obj.uuid} obj={obj}/>)
+  const listElements = rows.map((obj) => <RowElement key={obj.uuid} obj={obj} updateRows={updateRows}/>)
 
   return (
-    <SafeAreaView style={{flex:1}}>
+    <SafeAreaView style={{flex:1, backgroundColor: '#294F50'}}>
       <StatusBar barStyle='light-content'/>
-      <TopBanner titleName='Blue'/>
+
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         {listElements}
       </ScrollView>
@@ -47,6 +51,7 @@ const Home = ({ navigation }) => {
             name='plus'
             size={45}
             color='#000'
+            backgroundColor='#F8ECEC'
             onPress={() => {
               navigation.navigate('AddNew');
             }}

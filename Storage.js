@@ -41,9 +41,13 @@ const deleteRow = async (uuid, changeObj) => {
     (data) => JSON.parse(data)
   ).then(
     (data) => {
-      rows.splice(data.findIndex((obj) => uuid == obj.uuid),1)
-      storeData(rows)
+      data.splice(data.findIndex((obj) => uuid == obj.uuid),1)
+      console.log(data)
+      storeData(data)
     }
+  ).then(() => {
+    changeObj()
+  }
   )
 }
 
